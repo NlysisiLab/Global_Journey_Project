@@ -114,7 +114,7 @@ const Footer = () => {
           </div>
 
           {/* Support */}
-            <div>
+            {/* <div>
             <h3 className="text-lg font-semibold mb-6">Support</h3>
             <ul className="space-y-3">
               {support.map((item) => (
@@ -125,7 +125,7 @@ const Footer = () => {
                 </li>
               ))}
             </ul>
-          </div>
+          </div> */}
         </div>
 
         {/* Bottom Bar */}
@@ -151,7 +151,7 @@ const Footer = () => {
           }}className="text-white/60 hover:text-white text-sm transition-colors duration-300">
                 Privacy Policy
               </a>
-              <a href="#" disabled className="text-white/60 hover:text-white text-sm transition-colors duration-300">
+              <a href="#"  className="text-white/60 hover:text-white text-sm transition-colors duration-300">
                 Cookie Policy
               </a>
             </div>
