@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { CheckCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { Plane, Shield, Map, Headphones, Camera, Users } from "lucide-react";
 
 const About = () => {
   const features = [
@@ -46,6 +47,7 @@ const About = () => {
                 
                 <div className="grid grid-cols-2 gap-6">
                   <div className="text-center">
+                    
                     <div className="text-2xl font-bold mb-1">50+</div>
                     <div className="text-white/80 text-sm">Countries</div>
                   </div>

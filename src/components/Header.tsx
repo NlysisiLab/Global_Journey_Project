@@ -4,23 +4,25 @@ import { Menu, X, Plane } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import HeaderLogoImg from "@/assets/Images/Logo/Header-Logo.svg";
 
-const Header = () => {
+const Header = ({ onContactClick }: { onContactClick: () => void })=> {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { toast } = useToast();
 
   const scrollToSection = (href: string) => {
     const element = document.querySelector(href);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
       setIsMenuOpen(false);
+      element.scrollIntoView({ behavior: 'smooth' });
     }
 
   };
 
   const handleBookNow = () => {
     const contactSection = document.querySelector('#contact');
+    setIsMenuOpen(false);
     if (contactSection) {
       contactSection.scrollIntoView({ behavior: 'smooth' });
+      onContactClick();
     }
     toast({
       title: "Ready to book?",

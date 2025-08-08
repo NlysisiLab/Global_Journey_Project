@@ -30,10 +30,10 @@ const Footer = () => {
   ];
 
   const socialLinks = [
-    { icon: Facebook, href: "#" },
-    { icon: Twitter, href: "#" },
+    // { icon: Facebook, href: "#" },
+    // { icon: Twitter, href: "#" },
     { icon: Instagram, href: "#" },
-    { icon: Youtube, href: "#" },
+    // { icon: Youtube, href: "#" },
   ];
 
   return (
@@ -132,16 +132,26 @@ const Footer = () => {
         <div className="border-t border-white/20 mt-12 pt-8">
           <div className="flex flex-col md:flex-row items-center justify-between">
             <p className="text-white/60 text-sm">
-              © 2024 Global journey. All rights reserved.
+              © 2025 Global journey. All rights reserved.
             </p>
             <div className="flex gap-6 mt-4 md:mt-0">
-              <a href="#" className="text-white/60 hover:text-white text-sm transition-colors duration-300">
+              <a href="#"
+              onClick={(e) => {
+            e.preventDefault();
+            navigate('/term-service');
+          }}
+              className=" 
+             
+              text-white/60 hover:text-white text-sm transition-colors duration-300">
                 Terms of Service
               </a>
-              <a href="#" className="text-white/60 hover:text-white text-sm transition-colors duration-300">
+              <a href="#"     onClick={(e) => {
+            e.preventDefault();
+            navigate('/privacy-policy');
+          }}className="text-white/60 hover:text-white text-sm transition-colors duration-300">
                 Privacy Policy
               </a>
-              <a href="#" className="text-white/60 hover:text-white text-sm transition-colors duration-300">
+              <a href="#" disabled className="text-white/60 hover:text-white text-sm transition-colors duration-300">
                 Cookie Policy
               </a>
             </div>

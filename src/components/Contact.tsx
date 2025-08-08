@@ -245,7 +245,7 @@ const Contact = () => {
                       Plan Your Group Tour
                     </DialogTitle>
                   </DialogHeader>
-                  <div className="grid gap-4 py-4 max-h-[70vh] overflow-y-auto">
+                  <div className="grid gap-4 py-4 max-h-[70vh]">
                     <input
                       name="groupName"
                       placeholder="Group Name"
