@@ -21,7 +21,7 @@ interface EmailRequestBody {
   captchaToken: string;
 }
 
-app.post("/send-planning-email", async (req, res) => {
+app.post("/api/send-planning-email", async (req, res) => {
   try {
     const {
       groupName,
@@ -145,7 +145,7 @@ app.post("/send-planning-email", async (req, res) => {
 });
 
 
-app.post("/send-email", async (req: Request<{}, {}, EmailRequestBody>, res: Response) => {
+app.post("/api/send-email", async (req: Request<{}, {}, EmailRequestBody>, res: Response) => {
   const { fullName, email, phone, destination, message, captchaToken } = req.body;
 
   if (!captchaToken) {
