@@ -77,7 +77,8 @@ const Contact = () => {
     try {
       setIsLoading(true);
 
-      const response = await fetch("/.netlify/functions/mailer", {
+      const url = import.meta.env.VITE_API_BASE_URL+"/send-email"
+      const response = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...formData, captchaToken }),
@@ -255,6 +256,9 @@ const Contact = () => {
                     />
                     <div className="grid grid-cols-2 gap-4">
                       <input
+                      type="number"
+                      min={1}
+                      
                         name="adults"
                         placeholder="Adults"
                         value={groupData.adults}
@@ -262,6 +266,9 @@ const Contact = () => {
                         className={focusClass}
                       />
                       <input
+                        type="number"
+                        min={0}
+                        max={10}
                         name="children"
                         placeholder="Children"
                         value={groupData.children}
