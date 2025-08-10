@@ -41,6 +41,7 @@ const Contact = () => {
     nightsPerDestination: "",
     inclusions: "",
     mealPlan: "",
+    email : ""
   });
 
   const handleInputChange = (
@@ -122,11 +123,82 @@ const Contact = () => {
     }
   };
 
-  const handlePlanSubmit = () => {
-    toast({
-      title: "Group Tour Submitted!",
-      description: `Thanks ${groupData.groupName}, we'll contact you soon.`,
-    });
+  const handlePlanSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!isCaptchaVerified || !captchaToken) {
+      toast({
+        title: "CAPTCHA Required",
+        description: "Please complete the CAPTCHA before submitting.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!groupData.groupName || !groupData.email || !groupData.adults || !groupData.destinations
+      || !groupData.mealPlan || !groupData.children || !groupData.inclusions || !groupData.totalNights 
+      || !groupData.nightsPerDestination
+    ) {
+
+
+      toast({
+        title: "Missing Information",
+        description: "Please fill in all required fields.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+
+      const url = import.meta.env.VITE_API_BASE_URL+"/send-planning-email"
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...groupData, captchaToken }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        toast({
+          title: "Message Sent Successfully!",
+          description: "We'll get back to you within 24 hours.",
+        });
+
+        setGroupData({
+            groupName: "",
+    adults: "",
+    children: "",
+    totalNights: "",
+    destinations: "",
+    nightsPerDestination: "",
+    inclusions: "",
+    mealPlan: "",
+    email : ""
+        });
+        
+        
+      
+      } else {
+        toast({
+          title: "Failed to Send Message",
+          description: result.message || "Something went wrong.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error("Error sending message:", error);
+      toast({
+        title: "Error",
+        description: "An error occurred while sending your message.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+     
+    }
   };
 
   return (
@@ -253,6 +325,7 @@ const Contact = () => {
                       value={groupData.groupName}
                       onChange={handleGroupChange}
                       className={focusClass}
+                         required
                     />
                     <div className="grid grid-cols-2 gap-4">
                       <input
@@ -264,6 +337,7 @@ const Contact = () => {
                         value={groupData.adults}
                         onChange={handleGroupChange}
                         className={focusClass}
+                           required
                       />
                       <input
                         type="number"
@@ -282,6 +356,7 @@ const Contact = () => {
                       value={groupData.totalNights}
                       onChange={handleGroupChange}
                       className={focusClass}
+                      required
                     />
                     <input
                       name="destinations"
@@ -289,6 +364,7 @@ const Contact = () => {
                       value={groupData.destinations}
                       onChange={handleGroupChange}
                       className={focusClass}
+                      required
                     />
                     <input
                       name="nightsPerDestination"
@@ -296,6 +372,7 @@ const Contact = () => {
                       value={groupData.nightsPerDestination}
                       onChange={handleGroupChange}
                       className={focusClass}
+                      required
                     />
                     <input
                       name="inclusions"
@@ -303,6 +380,7 @@ const Contact = () => {
                       value={groupData.inclusions}
                       onChange={handleGroupChange}
                       className={focusClass}
+                      required
                     />
                     <input
                       name="mealPlan"
@@ -310,15 +388,49 @@ const Contact = () => {
                       value={groupData.mealPlan}
                       onChange={handleGroupChange}
                       className={focusClass}
+                      required
                     />
+                       <input
+                  name="email"
+                  type="email"
+                  placeholder="Email Address"
+                  className={focusClass}
+                  value={groupData.email}
+                  onChange={handleGroupChange}
+                  required
+                />
+      
                   </div>
+                  
                   <div className="flex justify-end">
+                                             {/* CAPTCHA */}
+               <Turnstile
+  ref={captchaRef}
+  sitekey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
+  onSuccess={(token) => {
+    setCaptchaToken(token);
+    setIsCaptchaVerified(true);
+  }}
+  onExpire={() => {
+    setCaptchaToken(null);
+    setIsCaptchaVerified(false);
+  }}
+  onError={() => {
+    setCaptchaToken(null);
+    setIsCaptchaVerified(false);
+  }}
+  options={{ theme: "light" }}
+/>
                     <Button
                       onClick={handlePlanSubmit}
-                      className="bg-[#f4a750] hover:bg-[#e08f30] text-white"
-                    >
-                      Submit
-                    </Button>
+                      className="ml-[5px] bg-[#f4a750] hover:bg-[#e08f30] text-white"
+                     disabled={!isCaptchaVerified || isLoading}
+>
+  {isLoading && (
+    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+  )}
+  {isLoading ? "Sending..." : "Submit"}
+</Button>
                   </div>
                 </DialogContent>
               </Dialog>

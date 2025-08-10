@@ -33,10 +33,11 @@ app.post("/send-planning-email", async (req, res) => {
       inclusions,
       mealPlan,
       email,
+      captchaToken
     } = req.body;
 
     // ✅ CAPTCHA verification (commented, enable if needed)
-    /*
+
     if (!captchaToken) {
       return res.status(400).json({ success: false, message: "Missing CAPTCHA token" });
     }
@@ -53,7 +54,7 @@ app.post("/send-planning-email", async (req, res) => {
     if (!verifyResponse.data.success) {
       return res.status(403).json({ success: false, message: "CAPTCHA verification failed" });
     }
-    */
+    
 
     // ✅ Nodemailer transporter
     const transporter = nodemailer.createTransport({
@@ -82,7 +83,42 @@ app.post("/send-planning-email", async (req, res) => {
   <div style="max-width:600px;margin:0 auto;background:#ffffff;padding:20px;border-radius:8px;line-height:1.6;">
     <h2 style="margin-top:0;color:#2c3e50;">Trip Plan for ${groupName}</h2>
     <p>Hello ${groupName},</p>
-    <p>We have prepared the details of your upcoming trip as per the information provided:</p>
+    <p>Trip Planning Enquiry:</p>
+    <table cellpadding="6" cellspacing="0" width="100%" style="border-collapse:collapse;">
+     <tr><td style="border:1px solid #ddd;"><strong>Email</strong></td><td style="border:1px solid #ddd;">${email}</td></tr>
+      <tr><td style="border:1px solid #ddd;"><strong>Adults</strong></td><td style="border:1px solid #ddd;">${adults}</td></tr>
+      <tr><td style="border:1px solid #ddd;"><strong>Children</strong></td><td style="border:1px solid #ddd;">${children}</td></tr>
+      <tr><td style="border:1px solid #ddd;"><strong>Total Nights</strong></td><td style="border:1px solid #ddd;">${totalNights}</td></tr>
+      <tr><td style="border:1px solid #ddd;"><strong>Destinations</strong></td><td style="border:1px solid #ddd;">${destinations}</td></tr>
+      <tr><td style="border:1px solid #ddd;"><strong>Nights per Destination</strong></td><td style="border:1px solid #ddd;">${nightsPerDestination}</td></tr>
+      <tr><td style="border:1px solid #ddd;"><strong>Inclusions</strong></td><td style="border:1px solid #ddd;">${inclusions}</td></tr>
+      <tr><td style="border:1px solid #ddd;"><strong>Meal Plan</strong></td><td style="border:1px solid #ddd;">${mealPlan}</td></tr>
+    </table>
+
+  </div>
+</body>
+</html>
+      `,
+    });
+
+       // ✅ Send Email
+    await transporter.sendMail({
+      from: `Global Journey <${process.env.SMTP_USER}>`,
+      to: email,
+      replyTo: process.env.RECEIVER_EMAIL,
+      subject: `Trip Plan — ${groupName}`,
+      html: `
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Trip Plan — ${groupName}</title>
+</head>
+<body style="margin:0;padding:20px;background:#f6f8fa;font-family:Arial, Helvetica, sans-serif;font-size:14px;color:#333;">
+  <div style="max-width:600px;margin:0 auto;background:#ffffff;padding:20px;border-radius:8px;line-height:1.6;">
+    <h2 style="margin-top:0;color:#2c3e50;">Trip Plan for ${groupName}</h2>
+    <p>Hello ${groupName},</p>
+    <strong>Thank you for reaching out to us! 🌏✈️</strong>
+    <p>We’re thrilled to receive your enquiry for the trip you’ve planned. Our sales team is already preparing the details and will be in touch very soon to help turn your travel dreams into reality. Get ready — your journey starts here!"</p>
     <table cellpadding="6" cellspacing="0" width="100%" style="border-collapse:collapse;">
       <tr><td style="border:1px solid #ddd;"><strong>Adults</strong></td><td style="border:1px solid #ddd;">${adults}</td></tr>
       <tr><td style="border:1px solid #ddd;"><strong>Children</strong></td><td style="border:1px solid #ddd;">${children}</td></tr>
@@ -99,6 +135,7 @@ app.post("/send-planning-email", async (req, res) => {
 </html>
       `,
     });
+
 
     res.status(200).json({ success: true, message: "Email sent successfully" });
   } catch (error) {
