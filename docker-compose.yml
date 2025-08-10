@@ -10,6 +10,8 @@ services:
       - "3000:80"
     container_name: global_journey_fe
     restart: always
+    networks:
+      - my_existing_network
     depends_on:
       - backend
 
@@ -21,3 +23,9 @@ services:
       - "5000:5000"
     container_name: global_journey_backend
     restart: always
+    networks:
+      - my_existing_network
+
+networks:
+  my_existing_network:
+    external: true
