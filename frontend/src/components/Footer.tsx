@@ -105,7 +105,7 @@ const Footer = () => {
             <ul className="space-y-3">
               {destinations.map((destination) => (
                 <li key={destination}>
-                  <a href="#" className="text-white/80 hover:text-white transition-colors duration-300">
+                  <a  onClick={() => navigate("/destination-info")} className="text-white/80 hover:text-white transition-colors duration-300">
                     {destination}
                   </a>
                 </li>
