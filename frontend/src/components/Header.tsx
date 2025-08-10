@@ -1,107 +1,86 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Menu, X, Plane } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
-import HeaderLogoImg from "@/assets/Images/Logo/Header-Logo.svg";
+import React, { useState } from "react";
+import { toast } from "@/components/ui/use-toast";
 
-const Header = ({ onContactClick }: { onContactClick: () => void })=> {
+const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { toast } = useToast();
-
-  const scrollToSection = (href: string) => {
-    const element = document.querySelector(href);
-    if (element) {
-      setIsMenuOpen(false);
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-
-  };
 
   const handleBookNow = () => {
-    const contactSection = document.querySelector('#contact');
     setIsMenuOpen(false);
-    if (contactSection) {
-      contactSection.scrollIntoView({ behavior: 'smooth' });
-      onContactClick();
-    }
+
+    // Dispatch custom event for Contact.tsx (or similar) to listen
+    window.dispatchEvent(new Event("openPlanningTrip"));
+
     toast({
       title: "Ready to book?",
       description: "Please fill out the contact form below to start planning your adventure!",
     });
   };
 
-  const navItems = [
-    { name: "Home", href: "#home" },
-    { name: "Destinations", href: "#destinations" },
-    { name: "Services", href: "#packages" },
-    { name: "About", href: "#about" },
-    { name: "Contact", href: "#contact" },
-  ];
-
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-border">
-      <div className="container mx-auto px-4 py-1.5">
-        <div className="flex items-center justify-between">
-          {/* Logo */}
-          <div className="flex items-center gap-2">
-            <img
-           src = {HeaderLogoImg}
-            alt="Global Journey Logo"
-          className="h-10 w-auto"
-        />
-           
-            <span className="text-2xl font-bold textOrange">GLOBAL JOURNEY
-            <p className="HeaderName">Your DMC Partner For Europe</p>
-</span>
-          </div>
+    <header className="bg-white shadow-md fixed top-0 left-0 w-full z-50">
+      <div className="container mx-auto px-4 py-3 flex justify-between items-center">
+        {/* Logo */}
+        <div className="text-xl font-bold">Your Logo</div>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-8">
-            {navItems.map((item) => (
-              <button
-                key={item.name}
-                onClick={() => scrollToSection(item.href)}
-                className="text-foreground hover:text-primary transition-colors duration-300 cursor-pointer"
-              >
-                {item.name}
-              </button>
-            ))}
-          </nav>
-
-          {/* CTA Button */}
-          <div className="hidden md:flex">
-            <Button variant="cta" size="lg" onClick={handleBookNow}>
-              Book Now
-            </Button>
-          </div>
-
-          {/* Mobile Menu Button */}
+        {/* Desktop Menu */}
+        <nav className="hidden md:flex items-center space-x-6">
+          <a href="#home" className="hover:text-blue-600">Home</a>
+          <a href="#about" className="hover:text-blue-600">About</a>
+          <a href="#services" className="hover:text-blue-600">Services</a>
+          <a href="#contact" className="hover:text-blue-600">Contact</a>
           <button
-            className="md:hidden"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            onClick={handleBookNow}
+            className=" text-white px-4 py-2 rounded bg-gradient-sunset"
           >
-            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            Book Now
+          </button>
+        </nav>
+
+        {/* Mobile Menu Button */}
+        <button
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          className="md:hidden flex items-center focus:outline-none"
+        >
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            {isMenuOpen ? (
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            ) : (
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            )}
+          </svg>
+        </button>
+      </div>
+
+      {/* Mobile Menu */}
+      {isMenuOpen && (
+        <div className="md:hidden bg-white shadow-md">
+          <a href="#home" className="block px-4 py-2 hover:bg-gray-100">Home</a>
+          <a href="#about" className="block px-4 py-2 hover:bg-gray-100">About</a>
+          <a href="#services" className="block px-4 py-2 hover:bg-gray-100">Services</a>
+          <a href="#contact" className="block px-4 py-2 hover:bg-gray-100">Contact</a>
+          <button
+            onClick={handleBookNow}
+            className="w-full text-left px-4 py-2 text-white bg-gradient-sunset"
+          >
+            Book Now
           </button>
         </div>
-
-        {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <nav className="md:hidden mt-4 py-4 border-t border-border">
-            {navItems.map((item) => (
-              <button
-                key={item.name}
-                onClick={() => scrollToSection(item.href)}
-                className="block py-2 text-left text-foreground hover:text-primary transition-colors duration-300 w-full"
-              >
-                {item.name}
-              </button>
-            ))}
-            <Button variant="cta" size="lg" className="mt-4 w-full" onClick={handleBookNow}>
-              Book Now
-            </Button>
-          </nav>
-        )}
-      </div>
+      )}
     </header>
   );
 };
