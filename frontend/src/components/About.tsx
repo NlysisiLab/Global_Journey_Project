@@ -198,7 +198,7 @@ const [isDialogOpen, setIsDialogOpen] = useState(false);
                     <input name="mealPlan" placeholder="Meal Plan" value={groupData.mealPlan} onChange={handleGroupChange} className={focusClass} required />
                     <input name="email" type="email" placeholder="Email Address" className={focusClass} value={groupData.email} onChange={handleGroupChange} required />
                   </div>
-                  <div className="justify-end">
+                  <div className="flex flex-col">
                     <Turnstile ref={captchaRef} sitekey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
                       onSuccess={(token) => { setCaptchaToken(token); setIsCaptchaVerified(true); }}
                       onExpire={() => { setCaptchaToken(null); setIsCaptchaVerified(false); }}

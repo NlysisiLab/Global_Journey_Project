@@ -11,17 +11,19 @@ const Hero = () => {
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
+    
   };
 
   const scrollToPackages = () => {
-    const element = document.querySelector('#destinations');
+    const element = document.querySelector('#packages');
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
-    toast({
-      title: "Explore Our Packages",
-      description: "Check out our amazing travel packages below!",
-    });
+    //commented by adarsh 11-08-2025
+    // toast({
+    //   title: "Explore Our Packages",
+    //   description: "Check out our amazing travel packages below!",
+    // });  
   };
 
   return (
