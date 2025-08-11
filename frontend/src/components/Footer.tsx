@@ -151,9 +151,9 @@ const Footer = () => {
           }}className="text-white/60 hover:text-white text-sm transition-colors duration-300">
                 Privacy Policy
               </a>
-              <a href="#"  className="text-white/60 hover:text-white text-sm transition-colors duration-300">
+              {/* <a href="#"  className="text-white/60 hover:text-white text-sm transition-colors duration-300">
                 Cookie Policy
-              </a>
+              </a> */}
             </div>
           </div>
         </div>

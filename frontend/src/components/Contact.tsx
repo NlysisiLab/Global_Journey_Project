@@ -20,7 +20,7 @@ const Contact = () => {
   const [isCaptchaVerified, setIsCaptchaVerified] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const captchaRef = useRef<any>(null);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  // const [isDialogOpen, setIsDialogOpen] = useState(false);
   const contactSectionRef = useRef<HTMLDivElement | null>(null);
 
   const { toast } = useToast();
@@ -33,36 +33,36 @@ const Contact = () => {
     message: "",
   });
 
-  const [groupData, setGroupData] = useState({
-    groupName: "",
-    adults: "",
-    children: "",
-    totalNights: "",
-    destinations: "",
-    nightsPerDestination: "",
-    inclusions: "",
-    mealPlan: "",
-    email: ""
-  });
+  // const [groupData, setGroupData] = useState({
+  //   groupName: "",
+  //   adults: "",
+  //   children: "",
+  //   totalNights: "",
+  //   destinations: "",
+  //   nightsPerDestination: "",
+  //   inclusions: "",
+  //   mealPlan: "",
+  //   email: ""
+  // });
 
-  // Listen for global "openPlanningTrip" event from header
-  useEffect(() => {
-    const openHandler = () => {
-      contactSectionRef.current?.scrollIntoView({ behavior: "smooth" });
-      setTimeout(() => setIsDialogOpen(true), 600); // small delay for smoothness
-    };
+  // // Listen for global "openPlanningTrip" event from header
+  // useEffect(() => {
+  //   const openHandler = () => {
+  //     contactSectionRef.current?.scrollIntoView({ behavior: "smooth" });
+  //     setTimeout(() => setIsDialogOpen(true), 600); // small delay for smoothness
+  //   };
 
-    window.addEventListener("openPlanningTrip", openHandler);
-    return () => {
-      window.removeEventListener("openPlanningTrip", openHandler);
-    };
-  }, []);
+  //   window.addEventListener("openPlanningTrip", openHandler);
+  //   return () => {
+  //     window.removeEventListener("openPlanningTrip", openHandler);
+  //   };
+  // }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const handleGroupChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setGroupData({ ...groupData, [e.target.name]: e.target.value });
+  // const handleGroupChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+  //   setGroupData({ ...groupData, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -106,53 +106,53 @@ const Contact = () => {
     }
   };
 
-  const handlePlanSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!isCaptchaVerified || !captchaToken) {
-      toast({
-        title: "CAPTCHA Required",
-        description: "Please complete the CAPTCHA before submitting.",
-        variant: "destructive",
-      });
-      return;
-    }
-    if (!groupData.groupName || !groupData.email || !groupData.adults || !groupData.destinations
-      || !groupData.mealPlan || !groupData.children || !groupData.inclusions || !groupData.totalNights
-      || !groupData.nightsPerDestination
-    ) {
-      toast({
-        title: "Missing Information",
-        description: "Please fill in all required fields.",
-        variant: "destructive",
-      });
-      return;
-    }
+  // const handlePlanSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   if (!isCaptchaVerified || !captchaToken) {
+  //     toast({
+  //       title: "CAPTCHA Required",
+  //       description: "Please complete the CAPTCHA before submitting.",
+  //       variant: "destructive",
+  //     });
+  //     return;
+  //   }
+  //   if (!groupData.groupName || !groupData.email || !groupData.adults || !groupData.destinations
+  //     || !groupData.mealPlan || !groupData.children || !groupData.inclusions || !groupData.totalNights
+  //     || !groupData.nightsPerDestination
+  //   ) {
+  //     toast({
+  //       title: "Missing Information",
+  //       description: "Please fill in all required fields.",
+  //       variant: "destructive",
+  //     });
+  //     return;
+  //   }
 
-    try {
-      setIsLoading(true);
-      const url = import.meta.env.VITE_API_BASE_URL + "/send-planning-email";
-      const response = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...groupData, captchaToken }),
-      });
+  //   try {
+  //     setIsLoading(true);
+  //     const url = import.meta.env.VITE_API_BASE_URL + "/send-planning-email";
+  //     const response = await fetch(url, {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({ ...groupData, captchaToken }),
+  //     });
 
-      const result = await response.json();
-      if (result.success) {
-        toast({ title: "Message Sent Successfully!", description: "We'll get back to you within 24 hours." });
-        setGroupData({
-          groupName: "", adults: "", children: "", totalNights: "", destinations: "",
-          nightsPerDestination: "", inclusions: "", mealPlan: "", email: ""
-        });
-      } else {
-        toast({ title: "Failed to Send Message", description: result.message || "Something went wrong.", variant: "destructive" });
-      }
-    } catch (error) {
-      toast({ title: "Error", description: "An error occurred while sending your message.", variant: "destructive" });
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  //     const result = await response.json();
+  //     if (result.success) {
+  //       toast({ title: "Message Sent Successfully!", description: "We'll get back to you within 24 hours." });
+  //       setGroupData({
+  //         groupName: "", adults: "", children: "", totalNights: "", destinations: "",
+  //         nightsPerDestination: "", inclusions: "", mealPlan: "", email: ""
+  //       });
+  //     } else {
+  //       toast({ title: "Failed to Send Message", description: result.message || "Something went wrong.", variant: "destructive" });
+  //     }
+  //   } catch (error) {
+  //     toast({ title: "Error", description: "An error occurred while sending your message.", variant: "destructive" });
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   return (
     <section id="contact" ref={contactSectionRef} className="py-20 bg-muted/30">
@@ -190,48 +190,7 @@ const Contact = () => {
             </CardContent>
           </Card>
 
-          {/* Group Tour Card */}
-          <Card className="mt-[50px] border-0 bg-gradient-hero text-white">
-            <CardContent className="p-8 text-center">
-              <h3 className="text-2xl font-bold mb-4">Ready to explore?</h3>
-              <p className="mb-6">Join thousands of happy travelers who have discovered amazing destinations with us.</p>
-
-              <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                <Button onClick={() => setIsDialogOpen(true)} className="bg-white text-orange-600 hover:bg-gray-100">
-                  Start Planning
-                </Button>
-                <DialogContent className="max-w-md rounded-xl p-6">
-                  <DialogHeader>
-                    <DialogTitle className="text-xl font-bold">Plan Your Group Tour</DialogTitle>
-                  </DialogHeader>
-                  <div className="grid gap-4 py-4 max-h-[70vh]">
-                    <input name="groupName" placeholder="Group Name" value={groupData.groupName} onChange={handleGroupChange} className={focusClass} required />
-                    <div className="grid grid-cols-2 gap-4">
-                      <input type="number" min={1} name="adults" placeholder="Adults" value={groupData.adults} onChange={handleGroupChange} className={focusClass} required />
-                      <input type="number" min={0} max={10} name="children" placeholder="Children" value={groupData.children} onChange={handleGroupChange} className={focusClass} />
-                    </div>
-                    <input name="totalNights" placeholder="Total Nights" value={groupData.totalNights} onChange={handleGroupChange} className={focusClass} required />
-                    <input name="destinations" placeholder="Destination(s)" value={groupData.destinations} onChange={handleGroupChange} className={focusClass} required />
-                    <input name="nightsPerDestination" placeholder="Nights in Each Destination" value={groupData.nightsPerDestination} onChange={handleGroupChange} className={focusClass} required />
-                    <input name="inclusions" placeholder="Inclusions" value={groupData.inclusions} onChange={handleGroupChange} className={focusClass} required />
-                    <input name="mealPlan" placeholder="Meal Plan" value={groupData.mealPlan} onChange={handleGroupChange} className={focusClass} required />
-                    <input name="email" type="email" placeholder="Email Address" className={focusClass} value={groupData.email} onChange={handleGroupChange} required />
-                  </div>
-                  <div className="flex justify-end">
-                    <Turnstile ref={captchaRef} sitekey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
-                      onSuccess={(token) => { setCaptchaToken(token); setIsCaptchaVerified(true); }}
-                      onExpire={() => { setCaptchaToken(null); setIsCaptchaVerified(false); }}
-                      onError={() => { setCaptchaToken(null); setIsCaptchaVerified(false); }}
-                      options={{ theme: "light" }} />
-                    <Button onClick={handlePlanSubmit} className="ml-[5px] bg-[#f4a750] hover:bg-[#e08f30] text-white" disabled={!isCaptchaVerified || isLoading}>
-                      {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                      {isLoading ? "Sending..." : "Submit"}
-                    </Button>
-                  </div>
-                </DialogContent>
-              </Dialog>
-            </CardContent>
-          </Card>
+        
         </div>
       </div>
     </section>
