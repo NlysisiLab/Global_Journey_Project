@@ -6,8 +6,6 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    ports:
-      - "3000:80"
     container_name: global_journey_fe
     restart: always
     networks:
@@ -21,8 +19,6 @@ services:
       dockerfile: Dockerfile
     env_file: 
       - backend/.env
-    ports:
-      - "5000:5000"
     container_name: global_journey_backend
     restart: always
     networks:
