@@ -133,7 +133,14 @@ const Footer = () => {
           <div className="flex flex-col md:flex-row items-center justify-between">
             <p className="text-white/60 text-sm">
               © 2025 Global Journey. All rights reserved.
-            </p>
+            </p> 
+
+              <div>
+                      <a href="https://nlysislab.com/" target="_blank" className="text-white/60 hover:text-white text-sm transition-colors duration-300">
+                Developed By : NlysisLab LLP
+              </a>
+              </div>
+
             <div className="flex gap-6 mt-4 md:mt-0">
               <a href="#"
               onClick={(e) => {
